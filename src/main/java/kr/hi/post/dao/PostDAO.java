@@ -12,5 +12,7 @@ public interface PostDAO {
 
 	PostVO selectPost(@Param("num")int num);
 
+	boolean insertPost(PostVO post);
+
 	
 }

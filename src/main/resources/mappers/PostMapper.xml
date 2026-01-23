@@ -9,4 +9,9 @@
 	<select id="selectPost" resultType="PostVO">
 		select * from post where num = #{num}
 	</select>
+	
+	<insert id="insertPost">
+		insert into post(title, writer, content)
+		values(#{title}, #{writer}, #{content})
+	</insert>
 </mapper>

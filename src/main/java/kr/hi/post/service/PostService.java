@@ -25,5 +25,18 @@ public class PostService {
 		return postDAO.selectPost(num);
 	}
 
+	public boolean insertPost(PostVO post) {
+		if(post == null || 
+			post.getTitle().isBlank() || 
+			post.getContent().isBlank() || 
+			post.getWriter().isBlank()) {
+			return false;
+		}
+		//다오에게 게시글 정보를 주면서 게시글을 등록하라고 요청
+		//결과 = 다오야.게시글등록해(게시글정보);
+		boolean 결과 = postDAO.insertPost(post);
+		return 결과;
+	}
+
 	
 }
