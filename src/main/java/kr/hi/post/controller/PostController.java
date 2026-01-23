@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import kr.hi.post.model.vo.PostVO;
 import kr.hi.post.service.PostService;
@@ -35,5 +36,17 @@ public class PostController {
 		//model.addAttribute("화면에서쓸이름", 게시글목록);
 		model.addAttribute("posts", 게시글목록);
 		return "post/list";
+	}
+	@GetMapping("/post/detail/{num}")
+	public String postDetail(
+			//화면에서 보낸 게시글번호 가져옴 
+			@PathVariable("num") int num,
+			Model model) {
+		//서비스에게 게시글번호 주면서 게시글 정보 가져오라고 요청
+		//게시글 = 서비스야.게시글가져와(번호);
+		PostVO 게시글 = postService.getPost(num);
+		//- 가져온 게시글 화면에 전달
+		model.addAttribute("post", 게시글);
+		return "post/detail";
 	}
 }

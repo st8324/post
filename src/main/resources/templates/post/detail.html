@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시글 사이트</title>
+</head>
+<body>
+	<h1>게시글 상세</h1>
+	<div>제목 : [[${post.title}]]</div>
+	<div>작성자 : [[${post.writer}]]</div>
+	<div>작성일 : [[${post.date}]]</div>
+	<div>내용 : </div>
+	<div>[[${post.content}]]</div>
+	<a href="/post/list">목록으로</a>
+</body>
+</html>

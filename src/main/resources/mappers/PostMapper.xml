@@ -5,4 +5,8 @@
 	<select id="selectPosts" resultType="PostVO">
 		select * from post order by num desc
 	</select>
+	
+	<select id="selectPost" resultType="PostVO">
+		select * from post where num = #{num}
+	</select>
 </mapper>

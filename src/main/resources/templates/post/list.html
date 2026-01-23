@@ -18,7 +18,10 @@
 		<tbody>
 			<tr th:each="post : ${posts}">
 				<td>[[${post.num}]]</td>
-				<td>[[${post.title}]]</td>
+				<td>
+					<a th:href="@{|/post/detail/${post.num}|}">[[${post.title}]]</a>
+					<!-- <a th:href="@{/post/detail/{num}(num=${post.num})}">[[${post.title}]]</a> -->
+				</td>
 				<td>[[${post.writer}]]</td>
 				<td>[[${post.date}]]</td>
 			</tr>

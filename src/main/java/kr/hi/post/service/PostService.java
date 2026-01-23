@@ -21,5 +21,9 @@ public class PostService {
 		return postDAO.selectPosts();
 	}
 
+	public PostVO getPost(int num) {
+		return postDAO.selectPost(num);
+	}
+
 	
 }
