@@ -54,6 +54,7 @@ jobs:
           # 최신 이미지 풀
           docker pull ${{ secrets.DOCKER_USERNAME }}/post:latest
           # 새 컨테이너 실행
+          # docker run -d -p 80:8080 --name post ${{ secrets.DOCKER_USERNAME }}/post:latest
           docker run -d \
             -p 80:8080 \
             --name post \
