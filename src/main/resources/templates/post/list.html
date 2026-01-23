@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시글 사이트</title>
+</head>
+<body>
+	<h1>게시글 목록</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="post : ${posts}">
+				<td>[[${post.num}]]</td>
+				<td>[[${post.title}]]</td>
+				<td>[[${post.writer}]]</td>
+				<td>[[${post.date}]]</td>
+			</tr>
+			<tr th:if="${posts.isEmpty()}">
+				<th colspan="4">등록된 게시글이 없습니다.</th>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
