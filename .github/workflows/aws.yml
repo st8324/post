@@ -47,5 +47,5 @@ jobs:
             -e DB_URL="${{ secrets.EC2_HOST }}" \
             -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
             -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
-            -e JWT_SECRET="${{ secrets.JWT_SECRET}}" \
+            -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
             name: CI/CD with Docker
