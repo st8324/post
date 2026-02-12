@@ -22,7 +22,8 @@ COPY backend/ .
 # React build 결과를 Spring static에 복사
 COPY --from=frontend /frontend/build ./src/main/resources/static
 
-RUN gradle build --no-daemon
+RUN chmod +x gradlew
+RUN ./gradlew build --no-daemon
 
 
 # -------------------------
