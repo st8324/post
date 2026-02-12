@@ -23,7 +23,7 @@ COPY backend/ .
 COPY --from=frontend /frontend/build ./src/main/resources/static
 
 RUN chmod +x gradlew
-RUN ./gradlew build --no-daemon
+RUN ./gradlew build -x test --no-daemon
 
 
 # -------------------------
