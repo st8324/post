@@ -64,6 +64,7 @@ jobs:
               -p 80:8080 \
               --name post \
               --network app-network \
+              -e GOOGLE_AI_API_KEY="${{ secrets.GOOGLE_AI_API_KEY }}" \
               -e AI_SERVER_URL="http://fastapi-ai:8000" \
               -e DB_URL="${{ secrets.DB_URL }}" \
               -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
