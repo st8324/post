@@ -21,7 +21,7 @@ app = FastAPI()
 
 # gemini-2.5-flash-lite
 # "gemini-3.1-flash-lite-preview"
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_API_KEY = os.getenv('GOOGLE_AI_API_KEY')
 GOOGLE_MODEL_NAME = "gemini-2.5-flash-lite"
 GOOGLE_SUMMARY_MODEL_NAME = "gemini-3.1-flash-lite-preview"
 GOOGLE_EMBED_MODEL_NAME = "gemini-embedding-2-preview"
