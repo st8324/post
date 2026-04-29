@@ -1,4 +1,4 @@
-name: CI/CD with Docker
+name: CI/CD with Docker (Spring + FastAPI)
 
 on:
   push:
@@ -9,19 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 코드 체크아웃
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Docker Hub 로그인 (최신 v3 사용)
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 3. Docker 이미지 빌드 및 푸시 (수동 run 대신 공식 action 사용 권장)
-      - name: Build and Push Docker Image
+      # 1. Spring+React 이미지 빌드/푸시
+      - name: Build Spring Image
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -29,7 +27,14 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/post:latest
 
-      # 4. EC2 접속 및 배포
+      # 2. FastAPI 이미지 빌드/푸시 (context 경로 주의)
+      - name: Build FastAPI Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./fastapi # FastAPI 소스 경로
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/fastapi-ai:latest
+
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -37,22 +42,29 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Docker Hub 로그인 (Private 저장소인 경우 필수)
-            echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
 
-            # 기존 컨테이너가 있는지 확인 후 처리 (에러 로그 방지)
-            if [ "$(sudo docker ps -aq -f name=post)" ]; then
-                sudo docker stop post
-                sudo docker rm post
-            fi
+            # 전문가의 팁: Docker 네트워크 생성 (서버간 통신용)
+            sudo docker network create app-network || true
 
-            # 최신 이미지 풀
+            # 3. FastAPI(AI) 서버 배포
+            sudo docker stop fastapi-ai || true
+            sudo docker rm fastapi-ai || true
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/fastapi-ai:latest
+            sudo docker run -d \
+              --name fastapi-ai \
+              --network app-network \
+              ${{ secrets.DOCKER_USERNAME }}/fastapi-ai:latest
+
+            # 4. Spring 서버 배포 (AI 서버 정보를 환경변수로 전달)
+            sudo docker stop post || true
+            sudo docker rm post || true
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/post:latest
-
-            # 새 컨테이너 실행
             sudo docker run -d \
               -p 80:8080 \
               --name post \
+              --network app-network \
+              -e AI_SERVER_URL="http://fastapi-ai:8000" \
               -e DB_URL="${{ secrets.DB_URL }}" \
               -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
@@ -60,5 +72,4 @@ jobs:
               --restart always \
               ${{ secrets.DOCKER_USERNAME }}/post:latest
 
-            # 사용하지 않는 이미지 정리
             sudo docker image prune -f
