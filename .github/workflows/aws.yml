@@ -32,6 +32,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./ai_server # FastAPI 소스 경로
+          file: ./ai_server/Dockerfile # Dockerfile의 정확한 경로
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
 
@@ -54,6 +55,7 @@ jobs:
             sudo docker run -d \
               --name ai_server \
               --network app-network \
+              -e GOOGLE_AI_API_KEY="${{ secrets.GOOGLE_AI_API_KEY }}" \
               ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
 
             # 4. Spring 서버 배포 (AI 서버 정보를 환경변수로 전달)
@@ -64,8 +66,7 @@ jobs:
               -p 80:8080 \
               --name post \
               --network app-network \
-              -e GOOGLE_AI_API_KEY="${{ secrets.GOOGLE_AI_API_KEY }}" \
-              -e AI_SERVER_URL="http://fastapi-ai:8000" \
+              -e AI_SERVER_URL="http://localhost:8000" \
               -e DB_URL="${{ secrets.DB_URL }}" \
               -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
