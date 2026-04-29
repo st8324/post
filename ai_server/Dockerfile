@@ -1,7 +1,7 @@
 # ---------------------------------------
 # 1단계: 빌드 스테이지 (컴파일 전용)
 # ---------------------------------------
-FROM python:3.10-slim AS builder
+FROM python:3.12-slim AS builder
 
 WORKDIR /ai_server
 
@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
 # ---------------------------------------
 # 2단계: 실행 스테이지 (경량화 환경)
 # ---------------------------------------
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 WORKDIR /ai_server
 
