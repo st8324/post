@@ -1,20 +1,26 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom"
-import { Main } from "./pages/Main";
-import { Login } from "./pages/Login";
-import { Signup } from "./pages/Signup";
-import { MyPage } from "./pages/MyPage";
-import { Navbar } from "./component/Navbar";
+import Ask from "./Ask";
+import List from "./List";
+import Main from "./Main";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Translate from "./Translate";
+import AdCopy from "./AdCopy";
+import Summarize from "./Summarize";
+import RagChatBot from "./RagChatbot";
+import ImageText from "./ImageText";
+
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      
       <Routes>
         <Route path="/" exact element={<Main/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/signup" element={<Signup/>} />
-        <Route path="/mypage" element={<MyPage/>} />
+        <Route path="/list" element={<List/>} />
+        <Route path="/ask" element={<Ask/>} />
+        <Route path="/translate" element={<Translate/>} />
+        <Route path="/ad-copy" element={<AdCopy/>} />
+        <Route path="/summarize" element={<Summarize/>} />
+        <Route path="/rag-chatbot" element={<RagChatBot/>} />
+        <Route path="/image-text" element={<ImageText/>} />
       </Routes>
     </BrowserRouter>
   );
