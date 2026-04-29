@@ -31,9 +31,9 @@ jobs:
       - name: Build FastAPI Image
         uses: docker/build-push-action@v5
         with:
-          context: ./fastapi # FastAPI 소스 경로
+          context: ./ai_server # FastAPI 소스 경로
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/fastapi-ai:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -48,13 +48,13 @@ jobs:
             sudo docker network create app-network || true
 
             # 3. FastAPI(AI) 서버 배포
-            sudo docker stop fastapi-ai || true
-            sudo docker rm fastapi-ai || true
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/fastapi-ai:latest
+            sudo docker stop ai_server || true
+            sudo docker rm ai_server || true
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
             sudo docker run -d \
-              --name fastapi-ai \
+              --name ai_server \
               --network app-network \
-              ${{ secrets.DOCKER_USERNAME }}/fastapi-ai:latest
+              ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
 
             # 4. Spring 서버 배포 (AI 서버 정보를 환경변수로 전달)
             sudo docker stop post || true
