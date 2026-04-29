@@ -55,6 +55,7 @@ jobs:
             sudo docker run -d \
               --name ai_server \
               --network app-network \
+              -e GOOGLE_AI_API_KEY="${{ secrets.GOOGLE_AI_API_KEY }}" \
               ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
 
             # 4. Spring 서버 배포 (AI 서버 정보를 환경변수로 전달)
@@ -65,7 +66,6 @@ jobs:
               -p 80:8080 \
               --name post \
               --network app-network \
-              -e GOOGLE_AI_API_KEY="${{ secrets.GOOGLE_AI_API_KEY }}" \
               -e AI_SERVER_URL="http://localhost:8000" \
               -e DB_URL="${{ secrets.DB_URL }}" \
               -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
