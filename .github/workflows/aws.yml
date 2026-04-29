@@ -32,6 +32,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./ai_server # FastAPI 소스 경로
+          file: ./ai_server/Dockerfile # Dockerfile의 정확한 경로
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
 
