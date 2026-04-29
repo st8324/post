@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Bean
     WebClient webClient() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8000")
+                .baseUrl("http://ai_server:8000")
                 .build();
     }
 }
