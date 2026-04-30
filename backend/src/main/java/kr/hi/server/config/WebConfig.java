@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 	
 	@Bean
-    WebClient webClient() {
+    public WebClient webClient() {
 		log.info("AI Server ULR : " + aiServerUrl);
         return WebClient.builder()
                 .baseUrl(aiServerUrl)

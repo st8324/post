@@ -25,6 +25,7 @@ public class AIController {
 	// 핵심: @AllArgsConstructor를 빼고 명시적으로 aiWebClient 빈을 주입받습니다.
     public AIController(@Qualifier("webClient") WebClient webClient) {
         this.webClient = webClient;
+        System.out.println("====== AI_SERVER_URL 주입 확인: " + webClient);
     }
     
 	@GetMapping("/ask")
