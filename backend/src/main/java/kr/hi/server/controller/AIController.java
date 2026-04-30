@@ -1,5 +1,6 @@
 package kr.hi.server.controller;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,17 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/api/v1/ai")
-@AllArgsConstructor
 @Log4j2
 public class AIController {
 	
 	private final WebClient webClient;
 	
+	// 핵심: @AllArgsConstructor를 빼고 명시적으로 aiWebClient 빈을 주입받습니다.
+    public AIController(@Qualifier("aiWebClient") WebClient webClient) {
+        this.webClient = webClient;
+    }
+    
 	@GetMapping("/ask")
 	public String ask(
 			@RequestParam("prompt")String prompt,
