@@ -7,7 +7,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import lombok.extern.log4j.Log4j2;
+
 @Configuration
+@Log4j2
 public class WebConfig implements WebMvcConfigurer {
 
 	@Value("${ai.server.url}")
@@ -24,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
 	
 	@Bean
     WebClient webClient() {
+		log.info("AI Server ULR : " + aiServerUrl);
         return WebClient.builder()
                 .baseUrl(aiServerUrl)
                 .build();
