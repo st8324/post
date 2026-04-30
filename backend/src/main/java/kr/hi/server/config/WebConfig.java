@@ -1,5 +1,6 @@
 package kr.hi.server.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -9,6 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+	@Value("${ai.server.url}")
+    private String aiServerUrl;
+	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
@@ -21,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Bean
     WebClient webClient() {
         return WebClient.builder()
-                .baseUrl("http://ai_server:8000")
+                .baseUrl(aiServerUrl)
                 .build();
     }
 }

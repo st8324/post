@@ -13,10 +13,12 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/api/v1/ai")
 @AllArgsConstructor
+@Log4j2
 public class AIController {
 	
 	private final WebClient webClient;
@@ -25,14 +27,22 @@ public class AIController {
 	public String ask(
 			@RequestParam("prompt")String prompt,
 			@RequestParam("endpoint")String endpoint) {
-		String result = webClient.get()
-			.uri(uriBuilder-> uriBuilder
-					.path(endpoint)
-					.queryParam("prompt", prompt)
-					.build())
-			.retrieve()
-			.bodyToMono(String.class)
-			.block();
+		log.info("일반 챗봇 테스트 작업중입니다....");
+		String result;
+		try {
+			result = webClient.get()
+					.uri(uriBuilder-> uriBuilder
+							.path(endpoint)
+							.queryParam("prompt", prompt)
+							.build())
+					.retrieve()
+					.bodyToMono(String.class)
+					.block();			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.info("ai 테스트 서버 연결 실패");
+			result = "{\"message\" : \"연결실패\"}";
+		}
 		return result;
 	}
 	
