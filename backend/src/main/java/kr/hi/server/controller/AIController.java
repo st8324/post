@@ -23,7 +23,7 @@ public class AIController {
 	private final WebClient webClient;
 	
 	// 핵심: @AllArgsConstructor를 빼고 명시적으로 aiWebClient 빈을 주입받습니다.
-    public AIController(@Qualifier("aiWebClient") WebClient webClient) {
+    public AIController(@Qualifier("webClient") WebClient webClient) {
         this.webClient = webClient;
     }
     
