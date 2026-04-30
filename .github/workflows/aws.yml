@@ -53,7 +53,7 @@ jobs:
             sudo docker rm ai_server || true
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/ai_server:latest
             sudo docker run -d \
-              --name ai_server \
+              --name ai-server \
               --network app-network \
               -p 8000:8000 \
               -e GOOGLE_AI_API_KEY="${{ secrets.GOOGLE_AI_API_KEY }}" \
@@ -68,7 +68,7 @@ jobs:
               -p 80:8080 \
               --name post \
               --network app-network \
-              -e AI_SERVER_URL="http://ai_server:8000" \
+              -e AI_SERVER_URL="http://ai-server:8000" \
               -e DB_URL="${{ secrets.DB_URL }}" \
               -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
               -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
