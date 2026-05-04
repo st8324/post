@@ -16,7 +16,7 @@ RUN ./gradlew build -x test --no-daemon
 FROM eclipse-temurin:21-jre
 
 WORKDIR /backend
-COPY --from=backend-build /app/build/libs/*.jar app.jar
+COPY --from=backend-build /backend/build/libs/*.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-Xmx512m","-jar", "app.jar"]
