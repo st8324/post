@@ -37,7 +37,7 @@ public class AIController {
 		try {
 			result = webClient.get()
 					.uri(uriBuilder-> uriBuilder
-							.path(endpoint)
+							.path("/ai"+endpoint)
 							.queryParam("prompt", prompt)
 							.build())
 					.retrieve()
@@ -57,7 +57,7 @@ public class AIController {
 			@RequestParam("style")String style) {
 		String result = webClient.get()
 				.uri(uriBuilder-> uriBuilder
-						.path("/translate")
+						.path("/ai"+"/translate")
 						.queryParam("text", text)
 						.queryParam("style", style)
 						.build())
@@ -77,7 +77,7 @@ public class AIController {
 		
 		String result = webClient.get()
 				.uri(uriBuilder-> uriBuilder
-						.path("/ad-copy")
+						.path("/ai"+"/ad-copy")
 						.queryParam("product", product)
 						.queryParam("feature", feature)
 						.queryParam("target", target)
@@ -94,7 +94,7 @@ public class AIController {
 		System.out.println(dto);
 		String result = 
 				webClient.post()
-					.uri("/summarize")
+					.uri("/ai"+"/summarize")
 					.bodyValue(dto)
 					.retrieve()
 					.bodyToMono(String.class)
@@ -108,7 +108,7 @@ public class AIController {
 		MultipartBodyBuilder bodyBuilder = new MultipartBodyBuilder();
 		bodyBuilder.part("file", file.getResource());
 		
-		return webClient.post().uri("/ingest-pdf")
+		return webClient.post().uri("/ai"+"/ingest-pdf")
 				.contentType(MediaType.MULTIPART_FORM_DATA)
 				.body(BodyInserters
 						.fromMultipartData(bodyBuilder.build()))
@@ -123,7 +123,7 @@ public class AIController {
 		
 		String result = webClient.get()
 				.uri(uriBuilder-> uriBuilder
-						.path("/rag-chatbot")
+						.path("/ai"+"/rag-chatbot")
 						.queryParam("prompt", prompt)
 						.build())
 				.retrieve()
@@ -141,7 +141,7 @@ public class AIController {
 		bodyBuilder.part("file", file.getResource());
 		bodyBuilder.part("query", query);
 		
-		return webClient.post().uri("/image-text")
+		return webClient.post().uri("/ai"+"/image-text")
 				.contentType(MediaType.MULTIPART_FORM_DATA)
 				.body(BodyInserters
 						.fromMultipartData(bodyBuilder.build()))

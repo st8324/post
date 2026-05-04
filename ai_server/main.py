@@ -46,7 +46,7 @@ chroma_client = chromadb.PersistentClient(
 collection = chroma_client.get_or_create_collection(name="class_knowledge")
 
 
-@app.get("/ask")
+@app.get("/ai/ask")
 async def ask_gemini(prompt: str):
 	response = client.models.generate_content(
     model= GOOGLE_MODEL_NAME,
@@ -57,7 +57,7 @@ async def ask_gemini(prompt: str):
 		"message": response.text
 	}
 
-@app.get("/translate")
+@app.get("/ai/translate")
 async def translate(
 	text:str = Query(..., description='번역할 문장'),
 	style:str =  Query("formal", description='말투: formal(격식), casual(반말), business(비즈니스)')
@@ -86,7 +86,7 @@ async def translate(
 		"message": response.text
 	}
 
-@app.get("/ad-copy")
+@app.get("/ai/ad-copy")
 def ad_copy(
 	product:str = Query(..., description='상품명'),
 	feature:str = Query(..., description='제품 특징'),
@@ -118,7 +118,7 @@ class Summary(BaseModel):
 	target_lan : str = "Korean"
 	max_sentence: int = 3 # n문장 요약
 
-@app.post("/summarize")
+@app.post("/ai/summarize")
 async def summarize(summary:Summary):
 	
 	prompt = f"""
@@ -155,7 +155,7 @@ async def summarize(summary:Summary):
 	return { 'message' : response.text}
 
 # 최근 N개 대화를 이용한 챗봇 => N개 이전 대화는 날라감
-@app.get("/chatbot")
+@app.get("/ai/chatbot")
 async def chatbot_gemini(prompt: str):
 	global chat_history
 	chat_history.append(types.Content(
@@ -214,7 +214,7 @@ async def update_summary():
 	)
 	db["summary"] = response.text
 
-@app.get("/summary-chatbot")
+@app.get("/ai/summary-chatbot")
 async def chatbot_gemini(prompt: str):
 	
 	db["history"].append(types.Content(	role="user", parts=[types.Part.from_text(text=prompt)]))
@@ -284,7 +284,7 @@ async def ingest_pdf(file:UploadFile, size : int):
 		raise Exception(e)
 
 # pdf를 주면 임베딩해서 저장
-@app.post("/ingest-pdf")
+@app.post("/ai/ingest-pdf")
 async def ingest_pdf_get(file:UploadFile = File(...)):
 	
 	try:
@@ -332,7 +332,7 @@ def rag_ask(prompt : str):
 	except Exception as e:
 		log(f"예외 발생 : {e}")
 
-@app.get("/rag-chatbot")
+@app.get("/ai/rag-chatbot")
 async def rag_chatbot(prompt:str=Query(...,description='질문')):
 	return rag_ask(prompt)
 
@@ -412,7 +412,7 @@ async def save_detection_result(image_bytes, ai_response):
 	finally:
 		return detections, image_data
 
-@app.post("/image-text")
+@app.post("/ai/image-text")
 async def image_text(
 	file:UploadFile = File(...),
 	query:str=File(...)):
